@@ -19,7 +19,6 @@ def generate_ships():
             f'{y_offset} {random.randrange(2, 10)}\r\n'
         y_offset += 30
 
-    print(ships)
     return ships
 
 
@@ -46,33 +45,38 @@ def save_score(name, score):
     elif name not in new_scores.keys():
         new_scores[name] = int(score)
 
+    new_scores_list = [(n, s) for n, s in new_scores.items()]
+    new_scores_list = sorted(
+        new_scores_list, key=lambda x: int(x[1]), reverse=True)[:10]
+
     string = ''
 
-    for k in new_scores.keys():
-        string += f'{k} {new_scores[k]}\r\n'
-
-    string = string[:]
+    for i in new_scores_list:
+        string += f'{i[0]} {i[1]}\r\n'
 
     with open(SCORES_PATH, 'w') as file:
         file.write(string)
 
 
 try:
+    print('Server Started!')
     while True:
         data, address = sock.recvfrom(256)
 
         string = data.decode('utf-8')
 
         if string.startswith('connect'):
+            print(f'{address} connected')
             clients.append(address)
             sock.sendto(generate_ships().encode('utf-8'), address)
         elif string.startswith('my score') and address in clients:
+            print(f'{address} pushed his score')
             args = string.splitlines()[1:]
             save_score(args[0], args[1])
             clients.remove(address)
         elif string.startswith('get scores'):
+            print(f'{address} requested scores')
             sock.sendto(get_scores().encode('utf-8'), address)
-
 except KeyboardInterrupt:
     pass
 finally:
