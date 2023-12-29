@@ -34,7 +34,7 @@ class Submarine:
 
 class Torpedo:
     def __init__(self, position, angle):
-        self.speed = 5
+        self.speed = 8
         self.position = position
         self.angle = angle
 

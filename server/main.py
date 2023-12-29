@@ -11,7 +11,7 @@ SCORES_PATH = os.path.join(os.path.dirname(
     os.path.dirname(__file__)), 'server', 'scores')
 
 
-def generate_ships():
+def generate_ships(): 
     ships = ''
     y_offset = 40
     for i in range(10):
@@ -52,7 +52,7 @@ def save_score(name, score):
     string = ''
 
     for i in new_scores_list:
-        string += f'{i[0]} {i[1]}\r\n'
+        string += f'{i[0]} {i[1]}\n'
 
     with open(SCORES_PATH, 'w') as file:
         file.write(string)
@@ -61,10 +61,10 @@ def save_score(name, score):
 try:
     print('Server Started!')
     while True:
-        data, address = sock.recvfrom(256)
+        data, address = sock.recvfrom(256) #получение данных от клиентов 
 
         string = data.decode('utf-8')
-
+        #парсинг строки (в соотв с протоколом)
         if string.startswith('connect'):
             print(f'{address} connected')
             clients.append(address)

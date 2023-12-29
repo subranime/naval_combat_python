@@ -7,12 +7,12 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 def send_score(name, score):
     sock.sendto(f'my score\r\n{name}\r\n{score}'.encode(
-        'utf-8'), shared.SERVER_ADDRESS)
+        'utf-8'), shared.SERVER_ADDRESS) #отправка пакета
 
 
 def req_connect():
-    sock.sendto(b'connect', shared.SERVER_ADDRESS)
-
+    sock.sendto(b'connect', shared.SERVER_ADDRESS) #b - превратили строку в последовательность байтов 
+#шаг из протокола "Для начала сеанса, игрок должен послать пакет со словом 'connect'" 
 
 def req_scores():
     sock.sendto(b'get scores', shared.SERVER_ADDRESS)
